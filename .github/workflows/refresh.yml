@@ -1,0 +1,50 @@
+name: Refresh market data
+
+on:
+  schedule:
+    # 08:30 and 16:30 IST, Monday-Friday (GitHub cron is UTC)
+    - cron: "0 3 * * 1-5"
+    - cron: "0 11 * * 1-5"
+  workflow_dispatch: {}
+
+permissions:
+  contents: write
+
+concurrency:
+  group: refresh-market-data
+  cancel-in-progress: false
+
+jobs:
+  refresh:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+          cache: pip
+      - run: pip install -r requirements.txt
+      - name: Fetch prices, flows, NAVs, news
+        run: python fetch_data.py
+      - name: AI brief (falls back to a rules-based brief if no key)
+        env:
+          GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
+        run: python ai_analyst.py
+      - name: Email / WhatsApp digest (skipped if secrets are not set)
+        env:
+          GMAIL_ADDRESS: ${{ secrets.GMAIL_ADDRESS }}
+          GMAIL_APP_PASSWORD: ${{ secrets.GMAIL_APP_PASSWORD }}
+          RECIPIENT_EMAIL: ${{ secrets.RECIPIENT_EMAIL }}
+          WHATSAPP_PHONE: ${{ secrets.WHATSAPP_PHONE }}
+          CALLMEBOT_API_KEY: ${{ secrets.CALLMEBOT_API_KEY }}
+          DASHBOARD_URL: ${{ secrets.DASHBOARD_URL }}
+        run: python notifier.py
+      - name: Commit refreshed data
+        run: |
+          git config user.name "aura-bot"
+          git config user.email "aura-bot@users.noreply.github.com"
+          git add data/market_snapshot.json data/history.jsonl
+          git diff --cached --quiet || git commit -m "data: refresh $(date -u +'%Y-%m-%d %H:%M UTC')"
+          git pull --rebase
+          git push
