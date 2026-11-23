@@ -1,0 +1,123 @@
+benchmarks:
+  indian_equity:
+    "Nifty 50": "^NSEI"
+    "BSE SENSEX": "^BSESN"
+    "Nifty Next 50": "^NSMIDCP"
+    "Nifty Midcap 150": "^NSEMDCP150"
+    "Nifty Smallcap 250": "HDFCSML250.NS"
+    "Nifty 500": "^CRSLDX"
+
+  volatility_indices:
+    "India VIX": "^INDIAVIX"
+    "US CBOE VIX": "^VIX"
+
+  indian_sectors:
+    "Nifty Bank": "^NSEBANK"
+    "Nifty IT": "^CNXIT"
+    "Nifty Pharma": "^CNXPHARMA"
+    "Nifty Auto": "^CNXAUTO"
+    "Nifty FMCG": "^CNXFMCG"
+    "Nifty Metals": "^CNXMETAL"
+    "Nifty Realty": "^CNXREALTY"
+    "Nifty Energy": "^CNXENERGY"
+    "Nifty PSU Bank": "^CNXPSUBANK"
+    "Nifty Infra": "^CNXINFRA"
+
+  global_indices:
+    "S&P 500": "^GSPC"
+    "Dow Jones": "^DJI"
+    "Nasdaq 100": "^NDX"
+    "FTSE 100": "^FTSE"
+    "CAC 40": "^FCHI"
+    "Nikkei 225": "^N225"
+    "DAX": "^GDAXI"
+    "Hang Seng": "^HSI"
+    "MSCI Emerging Markets": "EEM"
+
+  macro_commodities_fx:
+    "Gold USD/oz": "GC=F"
+    "Silver USD/oz": "SI=F"
+    "Brent Crude": "BZ=F"
+    "USD / INR": "INR=X"
+    "EUR / INR": "EURINR=X"
+    "GBP / INR": "GBPINR=X"
+    "JPY / INR": "JPYINR=X"
+    "US Dollar Index": "DX-Y.NYB"
+    "US 10Y Treasury Yield": "^TNX"
+
+  reits_invits:
+    "Embassy Office Parks REIT": "EMBASSY.NS"
+    "Mindspace Business Parks REIT": "MINDSPACE.NS"
+    "Brookfield India REIT": "BIRET.NS"
+    "Nexus Select Trust REIT": "NXST.NS"
+    "IndiGrid InvIT": "INDIGRID.NS"
+    "PowerGrid InvIT": "PGINVIT.NS"
+
+macro_manual:
+  # UPDATE THESE BY HAND after each RBI policy / CPI / WPI release, then set the date below (YYYY-MM-DD).
+  # The terminal shows a warning chip when this date is older than 35 days or not a valid date.
+  manual_data_asof: "REPLACE_WITH_YYYY-MM-DD"
+  rbi_repo_rate: 6.50
+  india_3m_tbill_approx: 6.55
+  india_1y_gsec_approx: 6.65
+  india_5y_gsec_approx: 6.75
+  india_10y_gsec_approx: 6.85
+  india_10y_gsec_prev_week: 6.78
+  risk_free_rate_india: 0.068
+  # Inflation & Valuation 10-Year Historical Anchors
+  cpi_yoy_pct: 4.85
+  cpi_prev_pct: 5.10
+  wpi_yoy_pct: 2.10
+  wpi_prev_pct: 1.85
+  nifty_10y_avg_pe: 22.5
+  nifty_10y_avg_pb: 3.2
+  nifty_10y_avg_div_yield: 1.35
+  nifty_eps_growth_yoy: 11.4
+  # Institutional Flows Fallback (INR Crores) used ONLY if the NSE live endpoint fails (shown as MANUAL)
+  fpi_net_cr: -1850.0
+  dii_net_cr: 2410.0
+
+amfi_monthly_manual:
+  report_month: "Oct 2026"
+  monthly_sip_inflow_cr: 25320
+  equity_net_inflow_cr: 34850
+  industry_aum_lakh_cr: 68.5
+  total_folios_cr: 21.6
+  top_category_inflow: "Flexi Cap & Sectoral/Thematic"
+
+nfo_watchlist:
+  - name: "Generic Narrow Thematic / NFO Momentum Fund"
+    category: "Thematic Equity"
+    flag: "Skip"
+    reason: "High overlap with existing diversified funds; wait for 1Y track record."
+  - name: "Nifty 500 Quality 50 Index Fund"
+    category: "Passive Factor"
+    flag: "Selective"
+    reason: "Low-cost factor exposure if portfolio lacks quality tilt."
+  - name: "Target Maturity SDL / G-Sec 2031 Fund"
+    category: "Debt Passive"
+    flag: "Consider"
+    reason: "Locks in sovereign yield curve roll-down for 5Y+ horizon."
+
+rss_feeds:
+  india:
+    - name: "LiveMint Markets"
+      url: "https://www.livemint.com/rss/markets"
+    - name: "Economic Times Markets"
+      url: "https://economictimes.indiatimes.com/markets/rssfeeds/1977021501.cms"
+    - name: "Business Standard Markets"
+      url: "https://www.business-standard.com/rss/markets-106.rss"
+  global:
+    - name: "CNBC Markets"
+      url: "https://search.cnbc.com/rs/search/combinedcms/view.xml?partnerId=wrss01&id=20910258"
+    - name: "MarketWatch Top Stories"
+      url: "https://feeds.content.dowjones.io/public/rss/mw_topstories"
+    - name: "Investing.com Macro"
+      url: "https://www.investing.com/rss/news_14.rss"
+    - name: "Yahoo Finance Global"
+      url: "https://finance.yahoo.com/news/rssindex"
+  regulatory:
+    - name: "SEBI Press Releases & Circulars"
+      url: "https://www.sebi.gov.in/sebirss.xml"
+    - name: "LiveMint Mutual Funds"
+      url: "https://www.livemint.com/rss/mutual-funds"
